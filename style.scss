@@ -1,0 +1,65 @@
+html {
+	font-family: "Comic Sans MS";
+	body {
+		width: 100vw;
+		height: 100vh;
+		padding: 0;
+		background-image: linear-gradient(hotpink, lime);
+		h1 {
+			vertical-align: middle;
+			text-align: center;
+			font-style: italic;
+			padding: 2rem 0;
+			margin: 0;
+		}
+
+		div.board {
+			display: flex;
+			justify-content: center;
+			table {
+				background-color: black;
+				tr {
+					td {
+						height: 7rem;
+						width: 7rem;
+						max-height: 14vw;
+						max-width: 14vw;
+						background-color: white;
+						text-align: center;
+						&:hover {
+							cursor: default;
+						}
+						&.highlighted {
+							background-color: red;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media (min-width: 2000px) {
+	@media (min-height: 1400px) {
+		html {
+			font-size: 1.5rem;
+	
+		}
+	}
+	
+}
+
+@media (max-width: 1000px) {
+
+		html {
+			font-size: 0.75rem;
+		}
+
+}
+
+@media (max-width: 750px) {
+	html {
+		font-size: 0.5rem;
+	}
+}
+
