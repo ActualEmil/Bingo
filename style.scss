@@ -1,36 +1,53 @@
 html {
 	font-family: "Comic Sans MS";
+
 	body {
 		width: 100vw;
 		height: 100vh;
 		padding: 0;
 		background-image: linear-gradient(hotpink, lime);
-		h1 {
-			vertical-align: middle;
-			text-align: center;
-			font-style: italic;
-			padding: 2rem 0;
-			margin: 0;
+		canvas {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 0;
 		}
+	
+		div {
+			z-index: 100;
+			h1 {
+				vertical-align: middle;
+				text-align: center;
+				font-style: italic;
+				padding: 2rem 0;
+				margin: 0;
+			}
 
-		div.board {
-			display: flex;
-			justify-content: center;
-			table {
-				background-color: black;
-				tr {
-					td {
-						height: 8rem;
-						width: 8rem;
-						max-height: 14vw;
-						max-width: 14vw;
-						background-color: white;
-						text-align: center;
-						&:hover {
-							cursor: default;
-						}
-						&.highlighted {
-							background-color: red;
+			div.board {
+				z-index: 100;
+
+				display: flex;
+				justify-content: center;
+				table {
+					z-index: 100;
+
+					background-color: black;
+					tr {
+						td {
+							z-index: 100;
+
+							height: 8rem;
+							width: 8rem;
+							max-height: 14vw;
+							max-width: 14vw;
+							background-color: white;
+							text-align: center;
+							&:hover {
+								cursor: default;
+							}
+							&.highlighted {
+								background-color: #BB0000;
+							}
 						}
 					}
 				}
