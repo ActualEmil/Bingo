@@ -20,8 +20,8 @@ html {
 				background-color: black;
 				tr {
 					td {
-						height: 7rem;
-						width: 7rem;
+						height: 8rem;
+						width: 8rem;
 						max-height: 14vw;
 						max-width: 14vw;
 						background-color: white;
@@ -50,11 +50,9 @@ html {
 }
 
 @media (max-width: 1000px) {
-
 		html {
 			font-size: 0.75rem;
 		}
-
 }
 
 @media (max-width: 750px) {
