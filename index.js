@@ -65,16 +65,18 @@ var entries = ["TGVguy", "Someone grinding the Ores route", "Complaints about Hi
 "Someone complains about @everyone", "Rokerige Joe", "Someone Complains about signals", "LIGHTS", "TTTE Roleplay", "Someone asks when the next update is",
 "Big Dean", "Clock talks about NS 4000", "UnionPacificGuy is retarded in-game", "Cheeselined", "Traffic jam at Zand", "Someone spams whistles", "Missing sounds",
 "Shitty bugreport without F9 screen", "Robin tells someone to boost", "Someone crashes into Zand", "Class 15", "Kid raging about stealing signals", 
-"Low graphics uncropped screenshot", "Someone ragequits", "Someone mentions Doggo Cow", "Someone complains over the game choice", "Someone plays earrape on the bot"];
+"Low graphics uncropped screenshot", "Someone ragequits", "Someone mentions Doggo Cow", "Someone complains over the game choice", "Someone suggests crashes", 
+"Game shutdown because update has bug", "The Cylinder", "you spin me right round", "Smoldrinsk", "Shiiba posts a shiba", "vroom vroom", "Potvis", 
+"Westinghouse brake pump", "Train without wagons"];
 
 // array of things that can be displayed on the free space
 var freeSpace = ["Signals are red for no reason"];
 
 for (let i = 0; i < HTMLboard.length; i++) {
-	if (i == 12) {
+	if (i == 12) { // if it's the free space in the middle
 		HTMLboard[i].innerText += freeSpace[randint(freeSpace.length)];
 		continue;
-	} // special functionality for the center square
+	}
 	HTMLboard[i].addEventListener("click", toggleHighlight); // setting an eventlistener for each square individually isn't the best but it's easier so whatever
 	let index = randint(entries.length);
 	HTMLboard[i].innerText = entries[index]; // randomises the text on the square
@@ -138,7 +140,7 @@ window.addEventListener("resize", () => { // if the window is resized it updates
 	c.width = window.innerWidth;
 	c.height = window.innerHeight;
 
-	console.log(window.innerWidth + " " + window.innerHeight)
+	console.log(window.innerWidth + " " + window.innerHeight);
 });
 
 // variables to keep track of things during the animation cycle
