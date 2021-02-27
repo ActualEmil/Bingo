@@ -1,6 +1,8 @@
 const HTMLboard = document.getElementsByTagName("td");
 
-var arrayBoard  = [[], [], [], [], []];
+var arrayBoard  = [[], [], [], [], []]; // saving the board in a 2d array making it easier to check for bingo
+
+var bingoCount = 0;
 
 for (let i = 0; i < document.getElementsByTagName("tr").length; i++) {
 	let children = document.getElementsByTagName("tr")[i].getElementsByTagName("td");
@@ -9,18 +11,21 @@ for (let i = 0; i < document.getElementsByTagName("tr").length; i++) {
 	}
 }
 
-console.log(arrayBoard);
-
 var toggleHighlight = (e) => {
 	e.target.classList.toggle("highlighted");
-	if (checkForBingo() == true) {
-		console.log("BINGO");
-		if (!animationRunning) startAnimation();
+	let bingo = checkForBingo();
+	if (bingo != 0) {
+		if (!animationRunning && bingoCount < bingo) {
+		startAnimation();
+		} 
 	}
+	bingoCount = bingo;
 }
 
 var checkForBingo = () => {
-	// Check row
+
+	let newBingoCount = 0; // counting the bingos;
+	// Checks each row for 
 	for (let i = 0; i < arrayBoard.length; i++) {
 		let rowIsBingo = true;
 		for (let j = 0; j < arrayBoard[i].length; j++) {
@@ -30,7 +35,7 @@ var checkForBingo = () => {
 			}
 		}
 		if (rowIsBingo) {
-			return true;
+			newBingoCount += 1;
 		}
 	}
 
@@ -45,77 +50,98 @@ var checkForBingo = () => {
 			}
 		}
 		if (columnIsBingo) {
-			return true;
+			newBingoCount += 1;
 		}
 	}
-	return false;
+	return newBingoCount;
 }
 
 var randint = (limit) => {
 	return Math.floor(Math.random() * limit);
 }
 
+// array of all possible entries onto the bingo board
 var entries = ["TGVguy", "Someone grinding the Ores route", "Complaints about Historically Inaccurate", "Stupid train suggestion", "Train deletes itself before spawning",
 "Someone complains about @everyone", "Rokerige Joe", "Someone Complains about signals", "LIGHTS", "TTTE Roleplay", "Someone asks when the next update is",
 "Big Dean", "Clock talks about NS 4000", "UnionPacificGuy is retarded in-game", "Cheeselined", "Traffic jam at Zand", "Someone spams whistles", "Missing sounds",
 "Shitty bugreport without F9 screen", "Robin tells someone to boost", "Someone crashes into Zand", "Class 15", "Kid raging about stealing signals", 
-"Low graphics uncropped screenshot", "Someone ragequits", "Someone mentions Doggo Cow", "Someone complains over the game choice", "Someone plays a meme song on the bot"];
+"Low graphics uncropped screenshot", "Someone ragequits", "Someone mentions Doggo Cow", "Someone complains over the game choice", "Someone plays earrape on the bot"];
 
-// "Shiiba posts M Hund", 
-
-console.log(entries.length);
+// array of things that can be displayed on the free space
+var freeSpace = ["Signals are red for no reason"];
 
 for (let i = 0; i < HTMLboard.length; i++) {
-	if (i == 12) continue; // skips functionality for the center square
-	HTMLboard[i].addEventListener("click", toggleHighlight);
+	if (i == 12) {
+		HTMLboard[i].innerText += freeSpace[randint(freeSpace.length)];
+		continue;
+	} // special functionality for the center square
+	HTMLboard[i].addEventListener("click", toggleHighlight); // setting an eventlistener for each square individually isn't the best but it's easier so whatever
 	let index = randint(entries.length);
-	HTMLboard[i].innerText = entries[index];
-	entries.splice(index, 1)
+	HTMLboard[i].innerText = entries[index]; // randomises the text on the square
+	entries.splice(index, 1); // removes the text from the list so we don't get duplicates
 }
 
-
-// canvas
+// canvas animation stuff
 
 class Square {
 	constructor() {
-		this.x = window.innerWidth / 2 + Math.random() * 100 - 50;
-		this.y = window.innerHeight * 0.9;
+		this.x = window.innerWidth / 2 + Math.random() * 100 - 50; // random x position
+		this.y = window.innerHeight * 0.9; // constant y position
 
-		this.dx = Math.random() * 20 - 10;
-		this.dy = Math.random() * 10 + 25;
+		this.dx = Math.random() * 30 - 15; //random x and y speeds
+		this.dy = Math.random() * 10 + 20;
 
-		this.sideLength = Math.random() * 5 + 5;
+		this.height = Math.random() * 5 + 5; // random size
+		this.width = Math.random() * 5 + 5;
 
-		let colours = ["hotpink", "red", "lime", "cyan", "yellow"];
+		let colours = ["hotpink", "red", "lime", "cyan", "yellow"]; // array of colours
 
-		this.colour = colours[Math.floor(Math.random() * colours.length)];
+		this.colour = colours[Math.floor(Math.random() * colours.length)]; // randomizes said array of colours
 
-		// this.a = Math.random() * 2 * Math.PI; // angle
-		// this.da = Math.random * Math.PI / 60;
+		this.a = Math.random() * 2 * Math.PI; // gives it a random angle
+		this.da = Math.random() * Math.PI / 15; // gives it a random angular velocity
 	}
 
 	draw() {
 
-		ctx.fillStyle = this.colour;
-		this.dy -= 0.75; // Gravity
+		// method for drawing an instance of the Square object
 
-		this.x += this.dx;
+		ctx.fillStyle = this.colour; // sets the colour
+		this.dy -= 0.6; // Gravity
+		// this.dy *= 0.99;
+
+		this.dx *= 0.99; // reduces sideways velocity over time
+
+		this.x += this.dx; // adds the positions
 		this.y -= this.dy;
 
-		ctx.fillRect(this.x, this.y, this.sideLength, this.sideLength);
+		this.a += this.da; // adds the rotation
+
+		ctx.translate(this.x, this.y); // moving the entire screen and rotating it is the only way I know to achieve rotation of objects
+		ctx.rotate(this.a);
+
+		ctx.fillRect(0, 0, this.width, this.height);
+
+		ctx.rotate(-this.a); // rotates it back
+		ctx.translate(-this.x, -this.y);
+
 	}
 }
 
-const c = document.getElementById("canvas");
-const ctx = c.getContext("2d");
+const c = document.getElementById("canvas"); // getting the canvas object
+const ctx = c.getContext("2d"); // getting the CanvasRenderingContext2D
 
-c.width = window.innerWidth;
+c.width = window.innerWidth; //sets the size of the context so it always fills the screen
 c.height = window.innerHeight;
 
-window.addEventListener("resize", () => {
+window.addEventListener("resize", () => { // if the window is resized it updates the size of the canvas
 	c.width = window.innerWidth;
 	c.height = window.innerHeight;
+
+	console.log(window.innerWidth + " " + window.innerHeight)
 });
+
+// variables to keep track of things during the animation cycle
 
 var frameCount = 0;
 
@@ -123,31 +149,35 @@ var animationRunning = false;
 
 var animationObjects = [];
 
-var startAnimation = () => {
+var startAnimation = () => { // function to start the animation
 	frameCount = 0;	
 	animationObjects = [];
 	animationRunning = true;
 
-	for (let i = 0; i < 100; i++) {
+	for (let i = 0; i < 100; i++) { // creates 100 "confetti" squares
 		animationObjects.push(new Square());
 	}
-	console.log(typeof frameCount);
-	console.log("ASDKAJSLKDJASLKDJASLKDJAKLS" + frameCount)
 	animate();
 }
 
+var stopAnimation = () => { // function to stop and clean up the animation
+	animationRunning = false;
+	ctx.clearRect(0, 0, innerWidth, innerHeight); // clears the screen
+}
+
 var animate = () => {
-	if (frameCount < 120) {
+	if (frameCount < 120) { // makes sure the animation only runs for 120 frames
 		requestAnimationFrame(animate);
 	}
 	else {
-		animationRunning = false;
+		stopAnimation();
+		return;
 	}
 	frameCount++;
 	
-	ctx.clearRect(0, 0, innerWidth, innerHeight);
+	ctx.clearRect(0, 0, innerWidth, innerHeight); // clears the screen
 
-	animationObjects.forEach(obj => {
+	animationObjects.forEach(obj => { // draws all the objects
 		obj.draw();
 	});
 }
