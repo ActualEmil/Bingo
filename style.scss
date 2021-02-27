@@ -3,7 +3,8 @@ html {
 
 	body {
 		width: 100vw;
-		height: 100vh;
+		height: 100%;
+		min-height: 100vh;
 		padding: 0;
 		background-image: linear-gradient(hotpink, lime);
 		canvas {
@@ -25,7 +26,7 @@ html {
 
 			div.board {
 				z-index: 100;
-
+				margin-bottom: 2rem;
 				display: flex;
 				justify-content: center;
 				table {

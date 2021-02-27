@@ -4,7 +4,8 @@ html {
 
 html body {
   width: 100vw;
-  height: 100vh;
+  height: 100%;
+  min-height: 100vh;
   padding: 0;
   background-image: -webkit-gradient(linear, left top, left bottom, from(hotpink), to(lime));
   background-image: linear-gradient(hotpink, lime);
@@ -31,6 +32,7 @@ html body div h1 {
 
 html body div div.board {
   z-index: 100;
+  margin-bottom: 2rem;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
